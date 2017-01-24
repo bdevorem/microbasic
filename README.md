@@ -3,10 +3,10 @@
 Will be a BASIC interpreter.  
 
 ## TODO
-[ ] Lexer
-[ ] Parser
-[ ] AST
+[ ] Lexer  
+[ ] Parser  
+[ ] AST  
 
 ## Contributors
-[John Westhoff](https://github.com/johnathonnow)
+[John Westhoff](https://github.com/johnathonnow)  
 [Breanna Devore-McDonald](https://github.com/bdevorem)
