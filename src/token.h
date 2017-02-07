@@ -33,9 +33,16 @@ typedef enum {
 	TOKEN_OR,
 	TOKEN_XOR,
 	TOKEN_SLL,
-	TOKEN_SRL
+	TOKEN_SRL,
+    TOKEN_ERROR
 } token_t;
+
+struct breezy_t {
+    token_t token;
+    int value;
+};
 
 const char* str_token(token_t t);
 token_t scan_token(char* line);
+int isNumber(String s);
 #endif

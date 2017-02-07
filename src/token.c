@@ -1,5 +1,13 @@
 #include "token.h"
 
+int isNumber(String s) {
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if ((c < '0' || c > '9') && c != '-') return 0;
+    }
+    return 1;
+}
+
 const char* str_token(token_t t){
 	switch(t) {
 		case TOKEN_PRINT:
@@ -38,16 +46,12 @@ const char* str_token(token_t t){
 		case TOKEN_END:
 			return "TOKEN_END";
 			break;
-
 		case TOKEN_NUM:
 			return "TOKEN_NUM";
 			break;
 		case TOKEN_STR:
-			// \"[alphanum]*\"
 			return "TOKEN_STR";
 			break;
-
-
 		case TOKEN_LPAREN:
 			return "TOKEN_LPAREN";
 			break;
@@ -102,16 +106,83 @@ const char* str_token(token_t t){
 		case TOKEN_SRL:
 			return "TOKEN_SRL";
 			break;
+		case TOKEN_ERROR:
+			return "TOKEN_ERROR";
+			break;
 	}
 }
 
-token_t scan_token(char* line){
-
-
-
-
-
-
-
+token_t scan_token(String word){
+    int state = 0;
+    String buf;
+    char symbol;
+    symbol = word.charAt(0);
+    if ( word == "CLEAR" ) {
+        return TOKEN_CLEAR;
+ 	} else if ( word == "PRINT" ) {
+        return TOKEN_PRINT;
+ 	} else if ( word == "IF" ) {
+        return TOKEN_IF;
+ 	} else if ( word == "THEN" ) {
+        return TOKEN_THEN;
+ 	} else if ( word == "GOTO" ) {
+        return TOKEN_GOTO;
+ 	} else if ( word == "INPUT" ) {
+        return TOKEN_INPUT;
+ 	} else if ( word == "LET" ) {
+        return TOKEN_LET;
+ 	} else if ( word == "GOSUB" ) {
+        return TOKEN_GOSUB;
+ 	} else if ( word == "RETURN" ) {
+        return TOKEN_RETURN;
+ 	} else if ( word == "LIST" ) {
+        return TOKEN_LIST;
+ 	} else if ( word == "RUN" ) {
+        return TOKEN_RUN;
+ 	} else if ( word == "END" ) {
+        return TOKEN_END;
+ 	} else if ( word == "(" ) {
+        return TOKEN_LPAREN;
+ 	} else if ( word == ")" ) {
+        return TOKEN_RPAREN;
+ 	} else if ( word == "," ) {
+        return TOKEN_COMMA;
+ 	} else if ( word == "*" ) {
+        return TOKEN_MUL;
+ 	} else if ( word == "/" ) {
+        return TOKEN_DIV;
+ 	} else if ( word == "-" ) {
+        return TOKEN_SUB;
+ 	} else if ( word == "+" ) {
+        return TOKEN_ADD;
+ 	} else if ( word == "=" ) {
+        return TOKEN_EQ;
+ 	} else if ( word == "<" ) {
+        return TOKEN_LT;
+ 	} else if ( word == ">" ) {
+        return TOKEN_GT;
+ 	} else if ( word == "<>" ) {
+        return TOKEN_NEQ;
+ 	} else if ( word == "<=" ) {
+        return TOKEN_LE;
+ 	} else if ( word == ">=" ) {
+        return TOKEN_GE;
+ 	} else if ( word == "A" ) {
+        return TOKEN_AND;
+ 	} else if ( word == "O" ) {
+        return TOKEN_OR;
+ 	} else if ( word == "X" ) {
+        return TOKEN_XOR;
+ 	} else if ( word == "L" ) {
+        return TOKEN_SLL;
+ 	} else if ( word == "R" ) {
+        return TOKEN_SLR;
+    } else if ( word.startsWith(String("\"")) && word.endsWith(String("\"")) ) {
+        return TOKEN_STR;
+    } else if ( isNumber(word) ){
+        return TOKEN_NUM;
+    } else {
+        return TOKEN_ERROR;
+    }
 }
 
