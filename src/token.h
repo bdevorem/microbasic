@@ -2,21 +2,40 @@
 #define TOKEN_H
 
 typedef enum {
-	TOKEN_LET,
 	TOKEN_PRINT,
 	TOKEN_IF,
 	TOKEN_THEN,
 	TOKEN_GOTO,
 	TOKEN_INPUT,
+	TOKEN_LET,
 	TOKEN_GOSUB,
 	TOKEN_RETURN,
 	TOKEN_CLEAR,
 	TOKEN_LIST,
 	TOKEN_RUN,
-	TOKEN_END
-	// and whatever else
+	TOKEN_END,
+	TOKEN_NUM,
+	TOKEN_STR,
+	TOKEN_LPAREN,
+	TOKEN_RPAREN,
+	TOKEN_COMMA,
+	TOKEN_MUL,
+	TOKEN_DIV,
+	TOKEN_SUB,
+	TOKEN_ADD,
+	TOKEN_EQ,
+	TOKEN_LT,
+	TOKEN_GT,
+	TOKEN_NEQ,
+	TOKEN_LE,
+	TOKEN_GE,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_XOR,
+	TOKEN_SLL,
+	TOKEN_SRL
 } token_t;
 
 const char* str_token(token_t t);
-
+token_t scan_token(char* line);
 #endif
