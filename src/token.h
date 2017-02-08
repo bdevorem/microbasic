@@ -1,5 +1,6 @@
 #ifndef TOKEN_H
 #define TOKEN_H
+#include "Energia.h"
 
 typedef enum {
 	TOKEN_PRINT,
@@ -43,6 +44,7 @@ struct breezy_t {
 };
 
 const char* str_token(token_t t);
-token_t scan_token(char* line);
+token_t scan_token(String line);
 int isNumber(String s);
 #endif
+
