@@ -1,7 +1,9 @@
 #ifndef LUTH_
 #define LUTH_
 char doLut(char in) {
-    static char shift = 0;
+    static char lshift = 0;
+    static char rshift = 0;
+    char shift = lshift || rshift;
     switch (in) {
         default  : return   0; break;
         case 0x1C: return 'A'; break;
@@ -47,7 +49,9 @@ char doLut(char in) {
         case 0x4E: return '-'; break;
         case 0x4A: return '/'; break;
         case 0x52: return '"'; break;
-        case 0x59: shift = !shift; return 0; break; //SHIFT
+        case 0x13: return shift?'>':'<'; break;
+        case 0x12: lshift = !lshift; return 0; break; //LSHIFT
+        case 0x59: rshift = !rshift; return 0; break; //RSHIFT
     }
 }
 #endif

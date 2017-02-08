@@ -35,7 +35,8 @@ typedef enum {
 	TOKEN_XOR,
 	TOKEN_SLL,
 	TOKEN_SRL,
-    TOKEN_ERROR
+    TOKEN_ERROR,
+    TOKEN_ID
 } token_t;
 
 struct breezy_t {

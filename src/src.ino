@@ -31,7 +31,7 @@ void loop() {
             }
             switch (toAdd) {
                 case 0: break;
-                case '\b': line = line.substring(0, line.length() - 1); break;
+                case '\b': Serial.print(" \b"); line = line.substring(0, line.length() - 1); break;
                 case '\n': Serial.print('\r'); scanner(line); line = ""; break;
                 default: line += toAdd; break;
             }
