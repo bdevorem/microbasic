@@ -265,11 +265,10 @@ breezy_t factor(breezy_t *line, int &i){
 			i++;
 			break;
 		case TOKEN_LPAREN:
-			Serial.println("ERROR: not implemented");
-			return (breezy_t){TOKEN_ERROR, 0};
-		case TOKEN_RPAREN:
-			Serial.println("ERROR: not implemented");
-			return (breezy_t){TOKEN_ERROR, 0};
+			i++;
+			r = expr(line, i);
+			if (l[i].token == TOKEN_RPAREN) i++;
+			else r = (breezy_t){TOKEN_ERROR, 0};
 		default:
 			Serial.println("ERROR: parse failed, you suck");
 			return (breezy_t){TOKEN_ERROR, 0};
