@@ -107,16 +107,16 @@ int scanner(char* l, breezy_t *line_tokens) {
 }
 
 void _print(breezy_t e){
-	if (e.token == TOKEN_ERROR) {
+	if (e.token == TOKEN_ERROR)
 		Serial.println("ERROR: parse failed, you suck");
-	} else 
+    else
 		Serial.print(e.value);
 }
 
 void _println(breezy_t e){
-	if (e.token == TOKEN_ERROR) {
+	if (e.token == TOKEN_ERROR)
 		Serial.println("ERROR: parse failed, you suck");
-	} else 
+	else 
 		Serial.println(e.value);
 }
 
@@ -188,7 +188,7 @@ int parser(breezy_t *l) {
 			for (int i = 0; i < NVARS; i++) {
 				Serial.print((char)('A' + i));
 				Serial.print(" = ");
-				Serial.println(vars[i]);
+				Serial.println( (vars[i]>>15)? STR_TABL[vars[i]&~(1<<15)] : vars[i] );
 			}
 			break;
 	} 
@@ -288,6 +288,4 @@ void unlock() {
 int cycle_str_ptr() {
 	return str_ptr = (str_ptr + 1) % STR_TABL_H;
 }
-
-
 
