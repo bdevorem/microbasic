@@ -142,10 +142,8 @@ int parser(breezy_t *l) {
 					i++;
 				} else if (l[i].token == TOKEN_ID){
 					_print(expr(l, i));
-					i++;
 				} else if (l[i].token == TOKEN_NUM){
 					_print(expr(l, i));
-					i++;
 				} else {
 					Serial.println("ERROR: parse failed, you suck");
 					return 1; //error
@@ -165,12 +163,18 @@ int parser(breezy_t *l) {
 			if (_var.token == TOKEN_ID && l[i].token == TOKEN_EQ){
 				Serial.println((char)('A'+l[1].value));
 				i++;
-				_expr = expr(l, i);
-				if (_expr.token == TOKEN_ERROR){
-					Serial.println("ERROR: parse failed, you suck");
-					return 1;
-				} else
-					vars[_var.value] = _expr.value;
+
+				if (l[i].token == TOKEN_STRING){
+					vars[_var.value] = l[i].value | 1 << 15;
+					i++;
+				} else {
+					_expr = expr(l, i);
+					if (_expr.token == TOKEN_ERROR){
+						Serial.println("ERROR: parse failed, you suck");
+						return 1;
+					} else
+						vars[_var.value] = _expr.value;
+				}
 			} else {
 				Serial.println("ERROR: parse failed, you suck");
 				return 1;
