@@ -4,6 +4,8 @@
 void stmt(breezy_t *l, int &i){
 	breezy_t _var;
 	breezy_t _expr;
+	int label;
+	int j;
 
 	token_t stmt_type = l[i].token;
 	i++;
@@ -75,6 +77,21 @@ void stmt(breezy_t *l, int &i){
 			Serial.println("OK");
 			break;
 		case TOKEN_GOTO:
+			if (l[i].token == TOKEN_NUM){
+				label = l[i].value;
+				for (j=0; j<MAX_LOOP_TOKENS; j++){
+					if (label == BREEZYXR[j].value && (j == 0 || BREEZYXR[j-1].token == TOKEN_CR) ){
+						// always go to first occurrence of the label
+						while (j < pc){
+							j++;
+							stmt(BREEZYXR, j);
+						}
+						return;
+					}
+				}
+			}
+			Serial.println(ERR": parse failed, you suck");
+			return;
 		case TOKEN_GOSUB:
 		case TOKEN_RUN:
 		case TOKEN_INPUT:
