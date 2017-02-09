@@ -35,9 +35,9 @@ typedef enum {
 	TOKEN_XOR,
 	TOKEN_SLL,
 	TOKEN_SRL,
-    TOKEN_ERROR,
-    TOKEN_ID,
-    TOKEN_CR
+        TOKEN_ERROR,
+        TOKEN_ID,
+        TOKEN_CR
 } token_t;
 
 struct breezy_t {
@@ -45,11 +45,10 @@ struct breezy_t {
     int value;
 };
 
-const char* str_token(token_t t);
-token_t scan_token(String line);
-int isNumber(String s);
-int isIdentifier(String s);
-int atoi(String& s);
+token_t scan_token(char* line, int len);
+int isNumber(char* line, int len);
+int atoi(char* line, int len);
+int strCmp(char* s1, int l1, char* s2, int l2);
 #endif
 
 

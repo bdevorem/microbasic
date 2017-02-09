@@ -10,8 +10,11 @@
 int count = 0;
 int data = 0;
 int o = 0;
+
+int line_len = 0;
+
 String vars[NVARS];
-String line;
+char line[MAX_LEN+1];
 
 void setup() {
     Serial.begin(9600);
@@ -34,30 +37,26 @@ void loop() {
             data = data>>1; //kill stop bit
             data &= ~0x100; //kill start bit
             char toAdd = doLut(data);
-            if (toAdd != 0) {
-                Serial.print(toAdd);
-            }
-            if (line.length() < MAX_LEN || toAdd == '\b') {
-              if (toAdd != 0) {
-                  if (toAdd == 'B')
-                      Serial.print(ESC"[32m");
-                  Serial.print(toAdd);
-                  if (toAdd =='B')
-                      Serial.print(ESC"[0m");
+            if (line_len < MAX_LEN || toAdd == '\b') {
+                if (toAdd != 0) {
+                    if (toAdd == 'B')
+                        Serial.print(ESC"[32m");
+                    Serial.print(toAdd);
+                    if (toAdd =='B')
+                        Serial.print(ESC"[0m");
+                }
+                switch (toAdd) {
+                  case 0: break;
+                  case '\b': Serial.print(" \b"); line_len--; break;
+                  case '\n': 
+                      Serial.print('\r');
+                      ret_val = scanner(line, line_tokens);
+                      if (ret_val == 1) Serial.println("ERROR: scan failed, you suck"); 
+                      else parser(line_tokens);
+                      line_len = 0;
+                      break;
+                  default: line[line_len++] = toAdd; break;
               }
-            switch (toAdd) {
-                case 0: break;
-                case '\b': Serial.print(" \b"); line = line.substring(0, line.length() - 1); break;
-                case '\n': 
-                    Serial.print('\r');
-                    ret_val = scanner(line, line_tokens);
-
-                    if (ret_val == 1) Serial.println("ERROR: scan failed, you suck"); 
-                    else parser(line_tokens); 
-
-                    line = "";
-                    break;
-                default: line += toAdd; break;
             }
             count = 0;
             data = 0;  
@@ -67,31 +66,36 @@ void loop() {
     o = n;
 }
 
-int scanner(String &line, breezy_t *line_tokens) {
-    String wordle;
+int scanner(char* l, breezy_t *line_tokens) {
+    char* wordle = l;
+    int len = 0;
     int token_num = 0;
     token_t type;
-
-    line[line.length()-1] = ' ';
-    for (int i = 0; i < line.length(); i++) {
-      char c = line.charAt(i);
+    line[line_len] = ' ';
+    for (int i = 0; i <= line_len; i++) {
+      char c = line[i];
       if (c == ' ') {
-        type = scan_token(wordle);
-        if (type == TOKEN_NUM || type == TOKEN_STR || type == TOKEN_ID)
-            line_tokens[token_num] = (breezy_t){type, wordle};
+        wordle[len] = 0;
+        Serial.println(wordle);
+        type = scan_token(wordle, len);
+        if (type == TOKEN_NUM)
+            line_tokens[token_num] = (breezy_t){type, atoi(wordle)};
+        else if (type == TOKEN_STR || type == TOKEN_ID)
+            line_tokens[token_num] = (breezy_t){type, i};
         else if (type == TOKEN_ERROR) return 1;
         else line_tokens[token_num] = (breezy_t){type, 0};
-        Serial.println(str_token(line_tokens[token_num]));
         token_num++;
-        wordle = "";
-      } else
-        wordle += c;
+        wordle+=len+1;
+        len=0;
+      } else {
+         len++;
+      }
     }
-    line_tokens[token_num] = TOKEN_CR;
+    line_tokens[token_num].token = TOKEN_CR;
     return 0;
 }
 
-int parser(breezy_t *line){
+int parser(breezy_t *line) {
     // parse and execute one line at a time
     int i = 0;
     switch (line[i].token) {
@@ -101,7 +105,7 @@ int parser(breezy_t *line){
             break;
         case TOKEN_PRINT:
             do {
-                if (line[i].token == TOKEN_STRING){
+                if (line[i].token == TOKEN_STR){
                     Serial.println(line[1].value);
                     i++; // next token
                 } else if (line[i].token == TOKEN_COMMA){
@@ -109,7 +113,7 @@ int parser(breezy_t *line){
                     i++;
                 } else if (line[i].token == TOKEN_ID){
                 } else if (line[i].token == TOKEN_NUM){
-                    Serial.println(expr(line, &i).value);
+                    Serial.println(expr(line, i).value);
                 } else {
                     return 1; //error
                 }
@@ -118,24 +122,31 @@ int parser(breezy_t *line){
             break;
         case TOKEN_IF:
             break;
-        case TOKEN_GOTO
+        case TOKEN_GOTO:
             break;
         case TOKEN_INPUT:
             break;
         case TOKEN_LET:
             break;
         case TOKEN_CLEAR:
+            Serial.print(ESC"[2J");
+            Serial.print(ESC"[0;0H");
             break;
         case TOKEN_LIST:
+          for (int i = 0; i < NVARS; i++) {
+            Serial.print((char)('A' + i));
+            Serial.print(" = ");
+            Serial.println(vars[i]);
+          }
             break;
     } 
 }
 
 breezy_t expr(breezy_t *line, int &i){
-    int t1, t2;
+    breezy_t t1, t2;
     token_t op;
 
-    t1 = term(int &i); //all muls and divs
+    t1 = term(i); //all muls and divs
     op = line[i].token;
 
     while (op == TOKEN_ADD || 
@@ -144,7 +155,7 @@ breezy_t expr(breezy_t *line, int &i){
         op == TOKEN_OR) {
         
         i++;
-        t2 = term(int &i);
+        t2 = term(i);
         switch (op){
             case TOKEN_ADD:
                 t1.value = t1.value + t2.value;
@@ -167,19 +178,6 @@ breezy_t expr(breezy_t *line, int &i){
 breezy_t term(int &i){
 }
 
-void clear() {
-    Serial.print(ESC"[2J");
-    Serial.print(ESC"[0;0H");
-}
-
-void list() {
-  for (int i = 0; i < NVARS; i++) {
-    Serial.print((char)('A' + i));
-    Serial.print(" = ");
-    Serial.println(vars[i]);
-  }
-}
-
 void lock() {
     pinMode(CLK, OUTPUT);
     digitalWrite(CLK, LOW); 
@@ -188,6 +186,7 @@ void lock() {
 void unlock() {
   pinMode(CLK, INPUT);
 }
+
 
 
 
