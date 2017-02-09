@@ -1,20 +1,9 @@
-# Back2Basic
-
-Will be a BASIC interpreter.  
-
-## TODO
-[ ] Lexer  
-[ ] Parser  
-[ ] AST  
-
-## Contributors
-[John Westhoff](https://github.com/johnathonnow)  
-[Breanna Devore-McDonald](https://github.com/bdevorem)
-
+# Microbasic
 
 ## Description
-
-This poorly named project is our Hackers Project 1 entry.
+This poorly named project is our 
+[Hackers In The Bazaar Project 1](https://www3.nd.edu/~pbui/teaching/cse.40842.sp17/project01.html) 
+entry.
 We plan on winning with it, because it is objectively awesome.
 
 There are three main parts to our project: the keyboard, the monitor,
@@ -59,4 +48,20 @@ the user because it is the first letter of "Breff", the name of the
 CSE Power Couple&trade;, as well as the favorite color of the relationship's
 pants-wearer, Breezy.
 
+## Usage
+Most importantly, you need the proper hardware (Pi Zero, Adafruit Pi HAT,
+IBM Model M, MSP430G2), all the proper cables and circuits, (extra points
+if you hotglued it all together inside a literal black box with drilled holes
+for cables), and a will to hack. Then, you need to install 
+[Energia](http://energia.nu/) in order to run the LaunchPad, and download
+the [TI udev rules](http://energia.nu/files/71-ti-permissions.rules) in order
+to program as a regular user. Also you need Linux because Windows sucks.
+
+## Contributors
+[John Westhoff](https://github.com/johnathonnow)  
+[Breanna Devore-McDonald](https://github.com/bdevorem)
+
+## TODO
+[x] Lexer  
+[x] Parser  
 
