@@ -160,9 +160,8 @@ void stmt(breezy_t *l, int &i){
 			break;
 		case TOKEN_IF:
 			breezy_t r;
-			i++;
-
 			r = relop(l, i);
+
 			if (l[i].token == TOKEN_THEN) i++;
 			else {
 				Serial.println(ERR": parse failed, you suck");
