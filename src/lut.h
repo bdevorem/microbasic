@@ -51,11 +51,13 @@ char doLut(char in) {
         case 0x52: return '"';
         case 0x13: return shift?'>':'<';
         case 0x5B: return '|';
+        case 0x41: return ',';
         case 0x12: lshift = !lshift; return 0; //LSHIFT
         case 0x59: rshift = !rshift; return 0; //RSHIFT
     }
 }
 #endif
+
 
 
 

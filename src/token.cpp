@@ -21,7 +21,7 @@ int isNumber(char* s, int len) {
     return len>=1;
 }
 
-int strCmp(char* s1, int l1, char* s2, int l2) {
+int strcmp(char* s1, int l1, char* s2, int l2) {
     if (l1 != l2) return 0;
     
     for (int i = 0; i < l1; i++) {
@@ -29,80 +29,92 @@ int strCmp(char* s1, int l1, char* s2, int l2) {
     }
     return 1;
 }
+void strcpy(char* s1, char* s2) {
+    char c;
+    while (c = *s1) {
+       s1++;
+       (*s2)=c;
+       s2++;
+    }
+    (*s2)=0;
+}
+
 
 token_t scan_token(char* word, int len) {
     int state = 0;
     String buf;
     char symbol = word[0];
-    Serial.println(word);
-    if ( word == "CLEAR" ) {
+    if ( strcmp(word, len, "CLEAR", 5) ) {
         return TOKEN_CLEAR;
- 	} else if ( word == "PRINT" ) {
+ 	} else if ( strcmp(word, len, "PRINT", 5 ) ) {
         return TOKEN_PRINT;
- 	} else if ( word == "IF" ) {
+ 	} else if ( strcmp(word, len, "IF", 2 ) ) {
         return TOKEN_IF;
- 	} else if ( word == "THEN" ) {
+ 	} else if ( strcmp(word, len, "THEN", 4 ) ) {
         return TOKEN_THEN;
- 	} else if ( word == "GOTO" ) {
+ 	} else if ( strcmp(word, len, "GOTO", 4 ) ) {
         return TOKEN_GOTO;
- 	} else if ( word == "INPUT" ) {
+ 	} else if ( strcmp(word, len, "INPUT", 5 ) ) {
         return TOKEN_INPUT;
- 	} else if ( word == "LET" ) {
+ 	} else if ( strcmp(word, len, "LET", 3 ) ) {
         return TOKEN_LET;
- 	} else if ( word == "GOSUB" ) {
+ 	} else if ( strcmp(word, len, "GOSUB", 5 ) ) {
         return TOKEN_GOSUB;
- 	} else if ( word == "RETURN" ) {
+ 	} else if ( strcmp(word, len, "RETURN", 6 ) ) {
         return TOKEN_RETURN;
- 	} else if ( word == "LIST" ) {
+ 	} else if ( strcmp(word, len, "LIST", 4 ) ) {
         return TOKEN_LIST;
- 	} else if ( word == "RUN" ) {
+ 	} else if ( strcmp(word, len, "RUN", 3 ) ) {
         return TOKEN_RUN;
- 	} else if ( word == "END" ) {
+ 	} else if ( strcmp(word, len, "END", 3 ) ) {
         return TOKEN_END;
- 	} else if ( word == "(" ) {
+ 	} else if ( strcmp(word, len, "(", 1 ) ) {
         return TOKEN_LPAREN;
- 	} else if ( word == ")" ) {
+ 	} else if ( strcmp(word, len, ")", 1 ) ) {
         return TOKEN_RPAREN;
- 	} else if ( word == "," ) {
+ 	} else if ( strcmp(word, len, ",", 1 ) ) {
         return TOKEN_COMMA;
- 	} else if ( word == "*" ) {
+ 	} else if ( strcmp(word, len, "*", 1 ) ) {
         return TOKEN_MUL;
- 	} else if ( word == "/" ) {
+ 	} else if ( strcmp(word, len, "/", 1 ) ) {
         return TOKEN_DIV;
- 	} else if ( word == "-" ) {
+ 	} else if ( strcmp(word, len, "-", 1 ) ) {
         return TOKEN_SUB;
- 	} else if ( word == "+" ) {
+ 	} else if ( strcmp(word, len, "+", 1 ) ) {
         return TOKEN_ADD;
- 	} else if ( word == "=" ) {
+ 	} else if ( strcmp(word, len, "=", 1 ) ) {
         return TOKEN_EQ;
- 	} else if ( word == "<" ) {
+ 	} else if ( strcmp(word, len, "<", 1 ) ) {
         return TOKEN_LT;
- 	} else if ( word == ">" ) {
+ 	} else if ( strcmp(word, len, ">", 1 ) ) {
         return TOKEN_GT;
- 	} else if ( word == "<>" ) {
+ 	} else if ( strcmp(word, len, "<>", 2 ) ) {
         return TOKEN_NEQ;
- 	} else if ( word == "<=" ) {
+ 	} else if ( strcmp(word, len, "<=", 2 ) ) {
         return TOKEN_LE;
- 	} else if ( word == ">=" ) {
+ 	} else if ( strcmp(word, len, ">=", 2 ) ) {
         return TOKEN_GE;
- 	} else if ( word == "A" ) {
+ 	} else if ( strcmp(word, len, "&", 1 ) ) {
         return TOKEN_AND;
- 	} else if ( word == "O" ) {
+ 	} else if ( strcmp(word, len, "|", 1 ) ) {
         return TOKEN_OR;
- 	} else if ( word == "X" ) {
+ 	} else if ( strcmp(word, len, "^", 1 ) ) {
         return TOKEN_XOR;
- 	} else if ( word == "L" ) {
+ 	} else if ( strcmp(word, len, "<<", 2 ) ) {
         return TOKEN_SLL;
- 	} else if ( word == "R" ) {
+ 	} else if ( strcmp(word, len, "<<", 2 ) ) {
         return TOKEN_SRL;
-    } else if ( len > 1 && word.startsWith(String("\"")) && word.endsWith(String("\"")) ) {
+    } else if ( len > 1 && word[0] == '"' && word[len-1] == '"' ) {
         return TOKEN_STR;
+    } else if ( len == 1 && word[0] >= 'A' && word[0] <= 'Z' ) {
+        return TOKEN_ID;
     } else if ( isNumber(word, len) ){
         return TOKEN_NUM;
     } else {
         return TOKEN_ERROR;
     }
 }
+
 
 
 

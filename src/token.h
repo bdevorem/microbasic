@@ -48,7 +48,8 @@ struct breezy_t {
 token_t scan_token(char* line, int len);
 int isNumber(char* line, int len);
 int atoi(char* line, int len);
-int strCmp(char* s1, int l1, char* s2, int l2);
+int strcmp(char* s1, int l1, char* s2, int l2);
+void strcpy(char* s1, char* s2);
 #endif
 
 
