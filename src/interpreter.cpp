@@ -69,10 +69,14 @@ void stmt(breezy_t *l, int &i){
                 Serial.println(vars[i]);
 			}
 			break;
+		case TOKEN_END:
+			_loop = 0;
+			pc = 0;
+			Serial.println("OK");
+			break;
 		case TOKEN_GOTO:
 		case TOKEN_GOSUB:
 		case TOKEN_RUN:
-		case TOKEN_END:
 		case TOKEN_INPUT:
 			break;
 	} 
