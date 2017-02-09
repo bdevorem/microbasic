@@ -11,7 +11,6 @@ int atoi(char* s, int len) {
     return n?-k:k;
 }
 
-
 int isNumber(char* s, int len) {
     int n = ((s[0] == '-')?1:0);
     for (int i = n; i < len; i++) {
@@ -29,6 +28,7 @@ int strcmp(char* s1, int l1, char* s2, int l2) {
     }
     return 1;
 }
+
 void strcpy(char* s1, char* s2) {
     char c;
     while (c = *s1) {
@@ -39,6 +39,19 @@ void strcpy(char* s1, char* s2) {
     (*s2)=0;
 }
 
+void _print(breezy_t e){
+	if (e.token == TOKEN_ERROR)
+		Serial.println(ERR": parse failed, you suck");
+	else 
+		Serial.print(e.value);
+}
+
+void _println(breezy_t e){
+	if (e.token == TOKEN_ERROR)
+		Serial.println(ERR": parse failed, you suck");
+	else 
+		Serial.println(e.value);
+}
 
 token_t scan_token(char* word, int len) {
     int state = 0;
