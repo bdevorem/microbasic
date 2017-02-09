@@ -20,7 +20,7 @@ void stmt(breezy_t *l, int &i){
 					i++;
 				} else if (l[i].token == TOKEN_ID){
 					_print(expr(l, i));
-				} else if (l[i].token == TOKEN_NUM){
+				} else if (l[i].token == TOKEN_NUM || l[i].token == TOKEN_LPAREN){
 					_print(expr(l, i));
 				} else {
 					Serial.println(ERR": parse failed, you suck");
