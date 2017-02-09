@@ -266,7 +266,7 @@ breezy_t factor(breezy_t *line, int &i){
 		case TOKEN_LPAREN:
 			i++;
 			r = expr(line, i);
-			if (l[i].token == TOKEN_RPAREN) i++;
+			if (line[i].token == TOKEN_RPAREN) i++;
 			else r = (breezy_t){TOKEN_ERROR, 0};
 		default:
 			Serial.println("ERROR: parse failed, you suck");
@@ -287,6 +287,7 @@ void unlock() {
 int cycle_str_ptr() {
 	return str_ptr = (str_ptr + 1) % STR_TABL_H;
 }
+
 
 
 
