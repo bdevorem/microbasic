@@ -47,5 +47,7 @@ struct breezy_t {
 const char* str_token(token_t t);
 token_t scan_token(String line);
 int isNumber(String s);
+int atoi(String& s);
 #endif
+
 
