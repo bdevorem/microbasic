@@ -109,17 +109,15 @@ int scanner(char* l, breezy_t *line_tokens) {
 void _print(breezy_t e){
 	if (e.token == TOKEN_ERROR) {
 		Serial.println("ERROR: parse failed, you suck");
-		return 1; //error
 	} else 
-		Serial.print(e.value)
+		Serial.print(e.value);
 }
 
-void _println(){
+void _println(breezy_t e){
 	if (e.token == TOKEN_ERROR) {
 		Serial.println("ERROR: parse failed, you suck");
-		return 1; //error
 	} else 
-		Serial.println(e.value)
+		Serial.println(e.value);
 }
 
 int parser(breezy_t *l) {
@@ -130,6 +128,8 @@ int parser(breezy_t *l) {
 
 	switch (l[0].token) {
 		case TOKEN_NUM:
+			// this function is for gotos and subroutines 
+			// which are not implemented
 			Serial.println("ERROR: not implemented");
 			return 1;
 		case TOKEN_PRINT:
@@ -260,8 +260,6 @@ breezy_t factor(breezy_t *line, int &i){
 			r = (breezy_t){TOKEN_NUM, vars[line[i].value]};
 			i++;
 			break;
-			//Serial.println("ERROR: not implemented");
-			//return (breezy_t){TOKEN_ERROR, 0};
 		case TOKEN_LPAREN:
 			Serial.println("ERROR: not implemented");
 			return (breezy_t){TOKEN_ERROR, 0};
