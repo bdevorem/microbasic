@@ -152,6 +152,24 @@ int parser(breezy_t *l) {
 			Serial.println();
 			break;
 		case TOKEN_IF:
+			int r;
+			i++;
+
+			r = relop();
+			if (l[i] == TOKEN_THEN) i++;
+			else {
+				Serial.println("ERROR: parse failed, you suck");
+				return 1; //error
+			}
+			
+			if (r) {
+				statement();
+			} else {
+				do {
+					i++;
+				} while (l[i].token != TOKEN_CR);
+				if (l[i].token == TOKEN_CR) i++;
+			}	
 			break;
 		case TOKEN_GOTO:
 			break;
@@ -189,6 +207,11 @@ int parser(breezy_t *l) {
 			}
 			break;
 	} 
+}
+
+void stmt(breezy_t *l, int &i){
+
+
 }
 
 breezy_t expr(breezy_t *line, int &i){
