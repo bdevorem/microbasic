@@ -1,5 +1,7 @@
 #ifndef DUMB_HEAD
 #define DUMB_HEAD
+#include "Energia.h"
+
 
 #define ESC "\033"
 #define ERR ESC"\e[0;31mERROR"ESC"\e[0;37m"
