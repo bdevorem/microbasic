@@ -1,6 +1,17 @@
 #include "token.h"
 #include "Energia.h"
 
+int atoi(String& s) {
+    int n = ((s.charAt(0) == '-')?1:0);
+    int k = 0;
+    int p = 1;
+    for (int i = s.length() - n - 1; i >= 0; i--) {
+        k += (s.charAt(i)-'0')*p; p*=10;
+    }
+    return n?-k:k;
+}
+
+
 int isNumber(String s) {
     int n = ((s.charAt(0) == '-')?1:0);
     for (int i = n; i < s.length(); i++) {
@@ -164,5 +175,6 @@ token_t scan_token(String word){
         return TOKEN_ERROR;
     }
 }
+
 
 
