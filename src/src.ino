@@ -268,6 +268,7 @@ breezy_t factor(breezy_t *line, int &i){
 			r = expr(line, i);
 			if (line[i].token == TOKEN_RPAREN) i++;
 			else r = (breezy_t){TOKEN_ERROR, 0};
+                        break;
 		default:
 			Serial.println("ERROR: parse failed, you suck");
 			return (breezy_t){TOKEN_ERROR, 0};
