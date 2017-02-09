@@ -59,7 +59,7 @@ void loop() {
 					case '\n': 
 							   Serial.print('\r');
 							   ret_val = scanner(line, line_tokens);
-							   if (ret_val == 1) Serial.println("ERROR: scan failed, you suck"); 
+							   if (ret_val == 1) Serial.println(ERR": scan failed, you suck"); 
 							   else parser(line_tokens);
 							   line_len = 0;
 							   break;
@@ -111,22 +111,22 @@ int scanner(char* l, breezy_t *line_tokens) {
 
 void _print(breezy_t e){
 	if (e.token == TOKEN_ERROR)
-		Serial.println("ERROR: parse failed, you suck");
+		Serial.println(ERR": parse failed, you suck");
 	else 
 		Serial.print(e.value);
 }
 
 void _println(breezy_t e){
 	if (e.token == TOKEN_ERROR)
-		Serial.println("ERROR: parse failed, you suck");
+		Serial.println(ERR": parse failed, you suck");
 	else 
 		Serial.println(e.value);
 }
 
-int parser(breezy_t *l) {
+void parser(breezy_t *l) {
 	// parse and execute one line at a time
 	int i = 0;
-	stmt(breezy_t *l, i);
+	stmt(l, i);
 }
 
 void stmt(breezy_t *l, int &i){
@@ -137,7 +137,7 @@ void stmt(breezy_t *l, int &i){
 	i++;
 	switch (stmt_type) {
 		case TOKEN_NUM:
-			Serial.println("ERROR: not implemented");
+			Serial.println(ERR": not implemented");
 			return;
 		case TOKEN_PRINT:
 			do {
@@ -152,23 +152,23 @@ void stmt(breezy_t *l, int &i){
 				} else if (l[i].token == TOKEN_NUM){
 					_print(expr(l, i));
 				} else {
-					Serial.println("ERROR: parse failed, you suck");
+					Serial.println(ERR": parse failed, you suck");
 					return;
 				}
 			} while (l[i].token != TOKEN_CR);
 			Serial.println();
 			break;
 		case TOKEN_IF:
-			int r;
+			breezy_t r;
 			i++;
 
 			r = relop(l, i);
-			if (l[i] == TOKEN_THEN) i++;
+			if (l[i].token == TOKEN_THEN) i++;
 			else {
-				Serial.println("ERROR: parse failed, you suck");
+				Serial.println(ERR": parse failed, you suck");
 				return; //error
 			}
-			if (r) stmt(l, i);
+			if (r.value) stmt(l, i);
 			else {
 				do { i++; } while (l[i].token != TOKEN_CR);
 				if (l[i].token == TOKEN_CR) i++;
@@ -186,12 +186,12 @@ void stmt(breezy_t *l, int &i){
 				i++;
 				_expr = expr(l, i);
 				if (_expr.token == TOKEN_ERROR){
-					Serial.println("ERROR: parse failed, you suck");
+					Serial.println(ERR": parse failed, you suck");
 					return;
 				} else
 					vars[_var.value] = _expr.value;
 			} else {
-				Serial.println("ERROR: parse failed, you suck");
+				Serial.println(ERR": parse failed, you suck");
 				return;
 			}
 			break;
@@ -319,7 +319,7 @@ breezy_t factor(breezy_t *l, int &i){
 			r = (breezy_t){TOKEN_NUM, vars[l[i].value]};
 			i++;
 			break;
-			//Serial.println("ERROR: not implemented");
+			//Serial.println(ERR": not implemented");
 			//return (breezy_t){TOKEN_ERROR, 0};
 		case TOKEN_LPAREN:
 			i++;
@@ -328,7 +328,7 @@ breezy_t factor(breezy_t *l, int &i){
 			else r = (breezy_t){TOKEN_ERROR, 0};
             break;
 		default:
-			Serial.println("ERROR: parse failed, you suck");
+			Serial.println(ERR": parse failed, you suck");
 			return (breezy_t){TOKEN_ERROR, 0};
 	}
 	return r;
@@ -346,6 +346,7 @@ void unlock() {
 int cycle_str_ptr() {
 	return str_ptr = (str_ptr + 1) % STR_TABL_H;
 }
+
 
 
 
