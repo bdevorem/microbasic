@@ -77,7 +77,7 @@ int scanner(String &line, breezy_t *line_tokens) {
     return 0;
 }
 
-void parser(breezy_t *line){
+int parser(breezy_t *line){
     // parse and execute one line at a time
     int i = 0;
     switch (line[i].token) {
@@ -97,7 +97,7 @@ void parser(breezy_t *line){
                 } else if (line[i].token == TOKEN_NUM){
                     Serial.println(expr(line, &i).value);
                 } else {
-                    break;
+                    return 1; //error
                 }
             } while (line[i].token != TOKEN_CR);
             // print new line
