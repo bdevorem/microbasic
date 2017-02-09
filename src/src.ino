@@ -108,15 +108,14 @@ void parser(breezy_t *l) {
 	// parse and execute one line at a time
 	int i = 0;
 	int j = 0;
-	if (l[0] == TOKEN_NUM){
-		if (_loop == 0) _loop = 1;
-		if (_loop == 1) {
-			for (j=0; j<MAX_TOKEN; j++){
-				BREEZYXR[pc] = l[j];
-				pc++; //add to program counter to keep track of loops
-			}
-		}
-		i++; //move past TOKEN_NUM
+	if (l[0].token == TOKEN_NUM || _loop) {
+                do {
+		    BREEZYXR[pc] = l[j];
+                    pc++; //add to program counter to keep track of loops
+                    j++;
+	        } while (l[j].token != TOKEN_CR);
+		i += 1 - _loop; //move past TOKEN_NUM if we are on a label
+                _loop = 1;
 	}
 	stmt(l, i);
 }
@@ -133,6 +132,7 @@ void unlock() {
 int cycle_str_ptr() {
 	return str_ptr = (str_ptr + 1) % STR_TABL_H;
 }
+
 
 
 

@@ -82,8 +82,11 @@ void stmt(breezy_t *l, int &i){
 				for (j=0; j<MAX_LOOP_TOKENS; j++){
 					if (label == BREEZYXR[j].value && (j == 0 || BREEZYXR[j-1].token == TOKEN_CR) ){
 						// always go to first occurrence of the label
-						while (j < pc){
-							j++;
+                                                //j++;
+						while (j < pc){		
+                                                        j++;
+                                                        Serial.print("PC = ");
+                                                        Serial.println(j);
 							stmt(BREEZYXR, j);
 						}
 						return;
@@ -224,3 +227,5 @@ breezy_t factor(breezy_t *l, int &i){
 	}
 	return r;
 }
+
+

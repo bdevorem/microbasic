@@ -1,6 +1,6 @@
 #ifndef DUMB_HEAD
 #define DUMB_HEAD
-#include "Energia.h"
+#include "token.h"
 
 
 #define ESC "\033"
@@ -9,7 +9,7 @@
 #define MAX_LEN (40)
 #define MAX_TOKEN (20)
 #define MAX_LINE (5)
-#define MAX_LOOP_TOKENS (80)
+#define MAX_LOOP_TOKENS (20)
 #define STR_TABL_W (10)
 #define STR_TABL_H (5)
 
