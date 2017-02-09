@@ -10,6 +10,12 @@ int isNumber(String s) {
     return s.length()>=1;
 }
 
+int isIdentifier(String s) {
+    if (s.length() != 1) return 0;
+    if (s.charAt(0) < 'A' || s.charAt(0) > 'Z') return 0;
+    return 1;
+}
+
 const char* str_token(token_t t){
 	switch(t) {
 		case TOKEN_PRINT:
@@ -80,6 +86,8 @@ const char* str_token(token_t t){
 			return "TOKEN_ERROR";
         case TOKEN_ID:
             return "TOKEN_ID";
+        case TOKEN_CR:
+            return "TOKEN_CR";
 	}
 }
 
@@ -138,20 +146,20 @@ token_t scan_token(String word){
         return TOKEN_LE;
  	} else if ( word == ">=" ) {
         return TOKEN_GE;
- 	} else if ( word == "A" ) {
+ 	} else if ( word == "&" ) {
         return TOKEN_AND;
- 	} else if ( word == "O" ) {
+ 	} else if ( word == "|" ) {
         return TOKEN_OR;
- 	} else if ( word == "X" ) {
-        return TOKEN_XOR;
- 	} else if ( word == "L" ) {
+ 	} else if ( word == "<<" ) {
         return TOKEN_SLL;
- 	} else if ( word == "R" ) {
+ 	} else if ( word == ">>" ) {
         return TOKEN_SRL;
     } else if ( word.length() > 1 && word.startsWith(String("\"")) && word.endsWith(String("\"")) ) {
         return TOKEN_STR;
     } else if ( isNumber(word) ){
         return TOKEN_NUM;
+    } else if ( isIdentifier(word) ){
+        return TOKEN_ID;
     } else {
         return TOKEN_ERROR;
     }
