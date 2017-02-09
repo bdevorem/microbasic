@@ -97,24 +97,27 @@ int parser(breezy_t *line){
     switch (line[i].token) {
         i++;
         case TOKEN_NUM:
-            // TODO: implement this 
-            break;
+			Serial.println("ERROR: not implemented");
+			return 1;
         case TOKEN_PRINT:
             do {
-                if (line[i].token == TOKEN_STRING){
-                    Serial.println(line[1].value);
+                if (line[i].token == TOKEN_STR){
+                    Serial.print(line[i].value);
                     i++; // next token
                 } else if (line[i].token == TOKEN_COMMA){
-                    Serial.println(" ");
+                    Serial.print(" ");
                     i++;
                 } else if (line[i].token == TOKEN_ID){
+					Serial.println("ERROR: not implemented");
+					return 1;
                 } else if (line[i].token == TOKEN_NUM){
-                    Serial.println(expr(line, &i).value);
+                    Serial.print(expr(line, &i).value);
                 } else {
+                    Serial.println("ERROR: parse failed, you suck");
                     return 1; //error
                 }
             } while (line[i].token != TOKEN_CR);
-            // print new line
+			Serial.println();
             break;
         case TOKEN_IF:
             break;
@@ -132,10 +135,10 @@ int parser(breezy_t *line){
 }
 
 breezy_t expr(breezy_t *line, int &i){
-    int t1, t2;
+    breezy_t t1, t2;
     token_t op;
 
-    t1 = term(int &i); //all muls and divs
+    t1 = term(line, &i); //all muls and divs
     op = line[i].token;
 
     while (op == TOKEN_ADD || 
@@ -144,7 +147,9 @@ breezy_t expr(breezy_t *line, int &i){
         op == TOKEN_OR) {
         
         i++;
-        t2 = term(int &i);
+        t2 = term(line, &i);
+		if (t1.token == TOKEN_ERROR || t1.token == TOKEN_ERROR)
+			return (breezy_t){TOKEN_ERROR, 0};
         switch (op){
             case TOKEN_ADD:
                 t1.value = t1.value + t2.value;
@@ -164,8 +169,54 @@ breezy_t expr(breezy_t *line, int &i){
     return t1;
 }
 
-breezy_t term(int &i){
+breezy_t term(breezy_t *line, int &i){
+    breezy_t f1, f2;
+    token_t op;
+
+    f1 = factor(line, &i); //vars, numbers
+    op = line[i].token;
+
+    while (op == TOKEN_MUL || op == TOKEN_DIV) {
+        i++;
+        f2 = factor(line, &i);
+		if (f2.token == TOKEN_ERROR || f1.token == TOKEN_ERROR)
+			return (breezy_t){TOKEN_ERROR, 0};
+        switch (op){
+            case TOKEN_MUL:
+                f1.value = f1.value * f2.value;
+                break;
+            case TOKEN_DIV:
+                f1.value = f1.value / f2.value;
+                break;
+        }
+        op = line[i].token;
+    }
+    return f1;
 }
+
+breezy_t factor(breezy_t *line, int &i){
+    breezy_t r;
+	int i;
+
+	switch (line[i].token){
+		case TOKEN_NUM:
+			r = line[i];
+			i++;
+			break;
+		case TOKEN_VAR:
+            Serial.println("ERROR: not implemented");
+			return (breezy_t){TOKEN_ERROR, 0};
+		case TOKEN_LPAREN:
+            Serial.println("ERROR: not implemented");
+			return (breezy_t){TOKEN_ERROR, 0};
+		case TOKEN_RPAREN:
+            Serial.println("ERROR: not implemented");
+			return (breezy_t){TOKEN_ERROR, 0};
+		default:
+            Serial.println("ERROR: parse failed, you suck");
+			return (breezy_t){TOKEN_ERROR, 0};
+    }
+    return r;
 
 void clear() {
     Serial.print(ESC"[2J");
