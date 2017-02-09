@@ -1,5 +1,6 @@
 #include "interpreter.h"
 #include "dumb.h"  
+
 void stmt(breezy_t *l, int &i){
 	breezy_t _var;
 	breezy_t _expr;
@@ -7,9 +8,6 @@ void stmt(breezy_t *l, int &i){
 	token_t stmt_type = l[i].token;
 	i++;
 	switch (stmt_type) {
-		case TOKEN_NUM:
-			Serial.println(ERR": not implemented");
-			return;
 		case TOKEN_PRINT:
 			do {
 				if (l[i].token == TOKEN_STR){

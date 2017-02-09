@@ -9,7 +9,9 @@ int str_ptr = 0;
 char STR_TABL[STR_TABL_H][STR_TABL_W];
 int vars[NVARS];
 char line[MAX_LEN+1];
-
+breezy_t BREEZYXR[MAX_LOOP_TOKENS];
+int _loop = 0;
+int pc = 0;
 
 int count = 0;
 int data = 0;
@@ -105,6 +107,17 @@ int scanner(char* l, breezy_t *line_tokens) {
 void parser(breezy_t *l) {
 	// parse and execute one line at a time
 	int i = 0;
+	int j = 0;
+	if (l[0] == TOKEN_NUM){
+		if (_loop == 0) _loop = 1;
+		if (_loop == 1) {
+			for (j=0; j<MAX_TOKEN; j++){
+				BREEZYXR[pc] = l[j];
+				pc++; //add to program counter to keep track of loops
+			}
+		}
+		i++; //move past TOKEN_NUM
+	}
 	stmt(l, i);
 }
 
