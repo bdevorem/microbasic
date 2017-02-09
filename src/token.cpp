@@ -1,5 +1,6 @@
 #include "token.h"
 #include "Energia.h"
+#include "dumb.h"
 
 int atoi(char* s, int len) {
     int n = ((s[0] == '-')?1:0);

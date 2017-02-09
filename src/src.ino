@@ -1,29 +1,21 @@
 #define CLK P1_4
 #define DAT P1_5
+#include "dumb.h"
 #include "lut.h"
 #include "token.h"
 #include "interpreter.h"
 
-#define NVARS (10)
-#define MAX_LEN (40)
-#define STR_TABL_W (10)
-#define STR_TABL_H (5)
+int str_ptr = 0;
+char STR_TABL[STR_TABL_H][STR_TABL_W];
+int vars[NVARS];
+char line[MAX_LEN+1];
 
-#define ESC "\033"
-#define ERR ESC"\e[0;31mERROR"ESC"\e[0;37m"
 
 int count = 0;
 int data = 0;
 int o = 0;
-
 int line_len = 0; 
 
-int str_ptr = 0;
-
-char STR_TABL[STR_TABL_H][STR_TABL_W];
-
-int vars[NVARS];
-char line[MAX_LEN+1];
 
 void setup() {
 	Serial.begin(9600);
@@ -128,6 +120,7 @@ void unlock() {
 int cycle_str_ptr() {
 	return str_ptr = (str_ptr + 1) % STR_TABL_H;
 }
+
 
 
 
