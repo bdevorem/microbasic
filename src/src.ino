@@ -18,7 +18,7 @@ int line_len = 0;
 
 int str_ptr = 0;
 
-char STR_TABL[STR_TABL_W][STR_TABL_H];
+char STR_TABL[STR_TABL_H][STR_TABL_W];
 
 int vars[NVARS];
 char line[MAX_LEN+1];
@@ -77,11 +77,12 @@ int scanner(char* l, breezy_t *line_tokens) {
 	char* wordle = l;
 	int len = 0;
 	int token_num = 0;
+        char inQuote = 0;
 	token_t type;
 	line[line_len] = ' ';
 	for (int i = 0; i <= line_len; i++) {
 		char c = line[i];
-		if (c == ' ') {
+		if (c == ' ' && !inQuote) {
 			wordle[len] = 0;
 			type = scan_token(wordle, len);
 			if (type == TOKEN_NUM)
@@ -99,6 +100,7 @@ int scanner(char* l, breezy_t *line_tokens) {
 			wordle+=len+1;
 			len=0;
 		} else {
+                        if (c == '"') inQuote = !inQuote;
 			len++;
 		}
 	}
