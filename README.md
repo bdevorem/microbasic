@@ -57,6 +57,20 @@ for cables), and a will to hack. Then, you need to install
 the [TI udev rules](http://energia.nu/files/71-ti-permissions.rules) in order
 to program as a regular user. Also you need Linux because Windows sucks.
 
+## Hardware
+The MSP430 launchpad connects to the
+raspberry pi zero over USB. The hat connects directly to the pi zero. The
+launchpad connects to the keyboard
+through a DIN-5 connector with the
+following pinout:  
+
+![pinout](docs/pinout.png)
+
+The CLK line connects to pin 1.4, and the DAT line connects to pin 1.5.
+3v3 and GND are connected to their
+respective power rails.
+
+
 ## Contributors
 [John Westhoff](https://github.com/johnathonnow)  
 [Breanna Devore-McDonald](https://github.com/bdevorem)
